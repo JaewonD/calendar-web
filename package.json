@@ -1,0 +1,23 @@
+{
+  "name": "calendar-web",
+  "version": "1.0.0",
+  "description": "CS350 calendar-web",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://www.github.com/JaewonD/calendar-web"
+  },
+  "keywords": [
+    "graduation"
+  ],
+  "author": "Paul Kim, Jaeyoon Kim, Jaewon Jung, Jincheol Ha",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.3"
+  }
+}
