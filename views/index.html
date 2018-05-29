@@ -1,19 +1,19 @@
 <html>
   <head>
-    <title>Main</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Sign in</title>
+    <% include ./head %>
   </head>
   <body>
-    <div class="mt-5 container">
-      <h1>Sign in</h1>
+    <% include ./header %>
 
-      <form class="mt-4 form-signin">
-          <input type="email" class="form-control" id="emailInput" placeholder="Enter email" required autofocus>
-          <input type="password" class="form-control" id="passwordInput" placeholder="Password" required>
-        <button type="submit" class="btn btn-primary mt-2">Sign in</button>
-        <div class="join"> Wanna join us? <a href="./signup" class="link-sign-up"> Sign up </a></div>  
-      </form>
+    <div class="mt-5 container">
+      <h1>Main Page</h1>
+
+      <a href="./signin"> Sign in</a> &nbsp;
+      <a href="./signup"> Sign up</a>
+      
     </div>
+
+    <% include ./footer %>
   </body>
 </html>

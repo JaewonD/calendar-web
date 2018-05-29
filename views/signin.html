@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>Sign in</title>
+    <% include ./head %>
+  </head>
+  <body>
+    <% include ./header %>
+
+    <div class="mt-5 container">
+      <h1>Sign in</h1>
+
+      <form class="mt-4 form-signin">
+          <input type="email" class="form-control" id="emailInput" placeholder="Enter email" required autofocus>
+          <input type="password" class="form-control" id="passwordInput" placeholder="Password" required>
+        <button type="submit" class="btn btn-primary mt-2">Sign in</button>
+        <div class="join"> Wanna join us? <a href="./signup" class="link-sign-up"> Sign up </a></div>  
+      </form>
+    </div>
+
+    <% include ./footer %>
+  </body>
+</html>

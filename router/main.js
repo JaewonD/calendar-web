@@ -4,8 +4,8 @@ module.exports = function(app)
         res.render('index.html');
     });
 
-    app.get('/login', function(req, res) {
-    	res.render('index.html');
+    app.get('/signin', function(req, res) {
+    	res.render('signin.html');
     });
 
     app.get('/signup', function(req, res) {
