@@ -1,23 +1,23 @@
 <html>
-  <head>
-    <title>Sign in</title>
-    <% include ./head %>
-  </head>
-  <body>
-    <% include ./header %>
+<head>
+  <title>Sign Up</title>
+  <% include ./head %>
+</head>
+<body>
+  <% include ./header %>
 
-    <div class="mt-5 container">
-      <h1>Sign up</h1>
+  <div class="container">
+    <form class="form-signup">
+      <h1 class="text-center">Sign up</h1>
+      <label>Email</label>
+      <input type="email" class="mb-4 form-control" id="emailInput" placeholder="Enter email" required autofocus>
+      <label>Password</label>
+      <input type="password" class="form-control" id="passwordInput" placeholder="Password" required>
+      <input type="password" class="mb-4 form-control" id="passwordInputConfirm" placeholder="Re-enter Password" required>
+      <button type="submit" class="btn btn-lg btn-primary btn-block mt-2">Sign up</button>
+    </form>
+  </div>
 
-      <form class="mt-4 form-signup">
-          <input type="email" class="mb-2 form-control" id="emailInput" placeholder="Enter email" required autofocus>
-
-          <input type="password" class="form-control" id="passwordInput" placeholder="Password" required>
-          <input type="password" class="form-control" id="passwordInputConfirm" placeholder="Re-enter Password" required>
-        <button type="submit" class="btn btn-primary mt-2">Sign up</button>
-      </form>
-    </div>
-    
-    <% include ./footer %>
-  </body>
+  <% include ./footer %>
+</body>
 </html>
