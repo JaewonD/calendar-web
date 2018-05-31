@@ -21,3 +21,8 @@ table#schedule {
 th {
 	font-weight: 600;
 }
+
+.table td, .table th {
+	border-top: 0;
+	border-right: 1px solid #dee2e6;
+}
