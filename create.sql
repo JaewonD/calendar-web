@@ -25,11 +25,11 @@ CREATE TABLE groups_users(
 
 CREATE TABLE Schedules(
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  start_time DATETIME NOT NULL,
-  end_time DATETIME NOT NULL,
   user_id INT,
   group_id INT,
+  start_time DATETIME NOT NULL,
+  end_time DATETIME NOT NULL,
+  name VARCHAR(255) NOT NULL,
   FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE,
   FOREIGN KEY (group_id) REFERENCES Groups (id) ON DELETE CASCADE
 );
