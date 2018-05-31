@@ -1,0 +1,40 @@
+/* main.html */
+
+.table-responsive {
+	height: 75%;
+}
+
+table#schedule {
+	table-layout: fixed;
+}
+
+.div-date {
+	font-size: 24px;
+	font-weight: 300;
+}
+
+.div-add-group {
+	position: absolute;
+	bottom: 0;
+}
+
+th {
+	font-weight: 600;
+}
+
+.table td, .table th {
+	padding: 0 0.75em 1.5em 0.75em;
+	border-top: 0;
+	border-bottom: 1px solid #dee2e6;
+	border-right: 1px solid #dee2e6;
+}
+
+.table thead th {
+	padding: 0.75em;
+}
+
+.table-schedule .date {
+	font-size:30px;
+	font-weight: 400;
+	margin-right: 5px
+}

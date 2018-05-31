@@ -1,19 +1,91 @@
 <html>
-  <head>
-    <title>Timetable Management System</title>
-    <% include ./head %>
-  </head>
-  <body>
-    <% include ./header %>
+<head>
+  <title>Timetable Management System</title>
+  <% include ./head %>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+  <% include ./header %>
 
-    <div class="mt-5 container">
-      <h1>Main Page</h1>
+  <div class="mt-3 container">
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="div-date col text-center mb-3">
+        <div class="row">
+          <div class="col-1">
+            <a href="#">Prev</a>
+          </div>
+          <div class="div-date text-center col">2018 May - 2018 June</div>
+          <div class="col-1 mr-2">
+            <a href="#">Next</a>
+          </div>
+        </div>
+      </div>
+      <div class="w-100"></div>
+      <div class="group col-3">
+        <button class="btn-add btn btn-lg btn-primary btn-block mb-3">Add</button>
+        <div class="group-list">
+          <!-- TO DO: group list 받기 -->
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck1">
+            <label class="custom-control-label" for="customCheck1">Group A</label>
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck2">
+            <label class="custom-control-label" for="customCheck2">Group B</label>
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck3">
+            <label class="custom-control-label" for="customCheck3">Group C</label>
+          </div>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck4">
+            <label class="custom-control-label" for="customCheck4">Group D</label>
+          </div>
+          <div class="div-add-group">
+            <a class="link" href="#">Add New Group</a>
+          </div>
+        </div>
 
-      <a href="./signin"> Sign in</a> &nbsp;
-      <a href="./signup"> Sign up</a>
-      
+      </div>
+      <div class="col">
+        <div class="table-schedule table-responsive">
+          <!-- TO DO: schedule list 받기 -->
+          <table class="table" id="schedule">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">
+                  <span class="date">27</span>
+                  <span class="text-danger">Sun</span>
+                </th>
+                <th scope="col"><span class="date">28</span>Mon</th>
+                <th scope="col"><span class="date">29</span>Tue</th>
+                <th scope="col"><span class="date">30</span>Wed</th>
+                <th scope="col"><span class="date">31</span>Thu</th>
+                <th scope="col"><span class="date">1</span>Fri</th>
+                <th scope="col">
+                  <span class="date">2</span>
+                  <span class="text-primary">Sat</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (var h = 0; h < 24; h++) { %>
+              <tr>
+                <th scope="row"><%= h %>:00</th>
+                <% for (var i = 0; i < 7; i++) { %>
+                <td id="timecell-<%=h %>-<%=i %>"></td>
+                <% } %>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <% include ./footer %>
-  </body>
+  <% include ./footer %>
+</body>
 </html>
