@@ -1,0 +1,23 @@
+/* main.html */
+
+.table-responsive {
+	height: 600px;
+}
+
+table#schedule {
+	table-layout: fixed;
+}
+
+.div-date {
+	font-size: 24px;
+	font-weight: 300;
+}
+
+.div-add-group {
+	position: absolute;
+	bottom: 0;
+}
+
+th {
+	font-weight: 600;
+}
