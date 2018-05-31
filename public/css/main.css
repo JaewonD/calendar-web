@@ -23,6 +23,7 @@ th {
 }
 
 .table td, .table th {
+	padding: 0 0.75em 1.5em 0.75em;
 	border-top: 0;
 	border-right: 1px solid #dee2e6;
 }
