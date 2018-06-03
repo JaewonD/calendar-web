@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var router = require('./router/main')(app);
 
 var session = require('express-session');
 
@@ -13,6 +12,7 @@ app.use(session({
 app.set('views', __dirname + '/views');
 
 app.use(express.static('public'));
+app.use('/', require('./router/main'));
 app.use('/api/user/', require('./api/user'))
 app.use('/api/schedule', require('./api/schedule'))
 

@@ -16,7 +16,7 @@ router.get('/login/:username/:password', (req, res) => {
     var username = req.params.username;
     var password = req.params.password;
     var sess = req.session;
-    console.log("Login request");
+    console.log("Login request arrived");
     pool.query(util.format('SELECT * FROM Users WHERE name = "%s";', username), function(err, results, fields) {
         var response = {};
         if (!err) {
@@ -52,6 +52,7 @@ router.get('/login/:username/:password', (req, res) => {
 
 router.get('/logout', (req, res) => {
     var sess = req.session;
+    console.log("Logout request arrived");
     req.session.destroy(function(err){
         
     });

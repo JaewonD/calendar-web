@@ -15,7 +15,7 @@ var router = express.Router();
 router.get('/:startdate/:enddate', (req, res) => {
     var sess = req.session;
     var username = sess.username;
-    console.log(username)
+    console.log("Username: " + username + " requested schedule info.");
     var startdate = req.params.startdate + " 00:00:00";
     var enddate = req.params.enddate + " 23:59:59";
 
