@@ -11,7 +11,7 @@ $('#login-form').submit(function() {
     }).done(function(data) {
         var success = data.success;
         if (success == "true") {
-            window.location.href = "http://localhost:3000";
+            window.location.href = domain;
             login_success = true;
         } else {
             alert("Invalid username or wrong password.");

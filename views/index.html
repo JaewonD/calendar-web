@@ -13,11 +13,11 @@
       <div class="div-date col text-center mb-3">
         <div class="row">
           <div class="col-1">
-            <a href="#">Prev</a>
+            <a onClick=go_to_prev_week()>Prev</a>
           </div>
-          <div class="div-date text-center col">2018 May - 2018 June</div>
+          <div class="div-date text-center col" id="ym-label">2018 May - 2018 June</div>
           <div class="col-1 mr-2">
-            <a href="#">Next</a>
+            <a onClick=go_to_next_week()>Next</a>
           </div>
         </div>
       </div>
@@ -56,16 +56,16 @@
               <tr>
                 <th scope="col"></th>
                 <th scope="col">
-                  <span class="date">27</span>
+                  <span class="date" id="date-value-0">27</span>
                   <span class="text-danger">Sun</span>
                 </th>
-                <th scope="col"><span class="date">28</span>Mon</th>
-                <th scope="col"><span class="date">29</span>Tue</th>
-                <th scope="col"><span class="date">30</span>Wed</th>
-                <th scope="col"><span class="date">31</span>Thu</th>
-                <th scope="col"><span class="date">1</span>Fri</th>
+                <th scope="col"><span class="date" id="date-value-1">28</span>Mon</th>
+                <th scope="col"><span class="date" id="date-value-2">29</span>Tue</th>
+                <th scope="col"><span class="date" id="date-value-3">30</span>Wed</th>
+                <th scope="col"><span class="date" id="date-value-4">31</span>Thu</th>
+                <th scope="col"><span class="date" id="date-value-5">1</span>Fri</th>
                 <th scope="col">
-                  <span class="date">2</span>
+                  <span class="date" id="date-value-6">2</span>
                   <span class="text-primary">Sat</span>
                 </th>
               </tr>
@@ -86,6 +86,7 @@
     </div>
   </div>
 
+  <script src="js/index.js"></script>
   <% include ./footer %>
 </body>
 </html>
