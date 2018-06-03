@@ -23,8 +23,9 @@ router.get('/:startdate/:enddate', (req, res) => {
                             FROM Users, Schedules \
                             WHERE Users.id = Schedules.user_id \
                             AND Users.name = "%s" \
-                            AND start_time > "%s" \
-                            AND end_time < "%s";', username, startdate, enddate), function(err, results, fields) {
+                            AND \
+                            NOT( (start_time < "%s" AND end_time < "%s") OR (start_time > "%s" AND end_time > "%s") );'
+                            , username, startdate, startdate, enddate, enddate), function(err, results, fields) {
         var response = {};
         if (!err) {
             if (results.length == 0) {
