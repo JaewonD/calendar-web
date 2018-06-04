@@ -8,17 +8,20 @@
   <% include ./header %>
 
   <div class="container">
-    <form class="form-signup">
+    <form class="form-signup" id="signup-form">
       <h1 class="text-center">Sign up</h1>
-      <label>Email</label>
+      <label>Username</label>
       <input type="text" class="mb-4 form-control" id="usernameInput" placeholder="Enter username" required autofocus>
       <label>Password</label>
       <input type="password" class="form-control" id="passwordInput" placeholder="Password" required>
       <input type="password" class="mb-4 form-control" id="passwordInputConfirm" placeholder="Re-enter Password" required>
-      <button type="submit" class="btn btn-lg btn-primary btn-block mt-2">Sign up</button>
+      <button type="submit" class="btn btn-lg btn-primary btn-block mt-2" id="signup-button">Sign up</button>
     </form>
   </div>
 
   <% include ./footer %>
 </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+  <script src="js/signup.js"></script>
 </html>

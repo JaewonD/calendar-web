@@ -55,4 +55,31 @@ router.get('/:startdate/:enddate', (req, res) => {
     });
 });
 
+router.post('/personal/:title/:startdate/:enddate', (req, res) => {
+    var sess = req.session;
+    var username = sess.username;
+    var userid = sess.userid;
+    console.log("Username: " + username + " requested to create schedule.");
+    var startdate = req.params.startdate;
+    var enddate = req.params.enddate;
+    var title = req.params.title;
+
+    pool.query(util.format('INSERT INTO Schedules(user_id, group_id, start_time, end_time, name) \
+                            VALUES("%s", NULL, "%s", "%s", "%s");'
+                            , userid, startdate, enddate, title), function(err, results, fields) {
+        var response = {};
+        if (!err) {
+            response["success"] = "true";
+            response["error"] = "";
+            res.json(response);
+            return;
+        } else {
+            console.log(err)
+            response["success"] = "false";
+            response["error"] = "Internal schedule db error!";
+            res.json(response);
+            return;
+        }
+    });
+})
 module.exports = router;
