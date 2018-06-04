@@ -58,6 +58,27 @@ router.get('/logout', (req, res) => {
     });
     res.json({"success":"true"});
     return;
-})
+});
+
+router.post('/signup/:username/:password', (req, res) => {
+    var username = req.params.username;
+    var password = req.params.password;
+    console.log("Signup request arrived");
+
+    var response = {};
+    pool.query(util.format('INSERT INTO Users(name, pwd) VALUES ("%s", "%s")', username, password), function(err, results, fields) {
+        var response = {};
+        if (!err) {
+            response["success"] = "true";
+            response["error"] = "";
+            res.json(response);
+        } else {
+            console.log(err)
+            response["success"] = "false";
+            response["error"] = "Internal signup server error!";
+            res.json(response);
+        }
+    });
+});
 
 module.exports = router;
