@@ -9,7 +9,7 @@ $('#signup-form').submit(function() {
         return true;
     }
 
-    var api_request_url = domain + "/api/user/signup/" + input_username + "/" + input_password + "/" + input_password_confirm;
+    var api_request_url = domain + "/api/user/signup/" + input_username + "/" + input_password;
     var signup_success = false;
     $.post({
         url: api_request_url,

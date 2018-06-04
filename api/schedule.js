@@ -71,7 +71,6 @@ router.post('/personal/:title/:startdate/:enddate', (req, res) => {
         if (!err) {
             response["success"] = "true";
             response["error"] = "";
-            response["data"] = [];
             res.json(response);
             return;
         } else {
