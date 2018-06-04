@@ -32,6 +32,7 @@ router.get('/login/:username/:password', (req, res) => {
                 response["success"] = "true";
                 response["error"] = "";
                 sess.username = username;
+                sess.userid = results[0].id;
                 res.json(response);
                 return;
             } else {
@@ -66,7 +67,7 @@ router.post('/signup/:username/:password', (req, res) => {
     console.log("Signup request arrived");
 
     var response = {};
-    pool.query(util.format('INSERT INTO Users(name, pwd) VALUES ("%s", "%s")', username, password), function(err, results, fields) {
+    pool.query(util.format('INSERT INTO Users(name, pwd) VALUES ("%s", "%s");', username, password), function(err, results, fields) {
         var response = {};
         if (!err) {
             response["success"] = "true";

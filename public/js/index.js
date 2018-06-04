@@ -4,6 +4,8 @@ const MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
 ];
 const DAYS_IN_A_WEEK = 7;
 
+const DOMAIN = "http://localhost:3000";
+
 /* ----------------- Page initialize ----------------- */
 var date = new Date();
 date.setDate(date.getDate() - date.getDay());
@@ -46,14 +48,13 @@ function render_date_label() {
 }
 
 function render_schedule() {
-    var domain = "http://localhost:3000";
     var start_date = new Date(date);
     var end_date = new Date(date);
     end_date.setDate(end_date.getDate() + DAYS_IN_A_WEEK - 1);
 
     var start_date_str = start_date.getFullYear() + "-" + (start_date.getMonth() + 1) + "-" + start_date.getDate();
     var end_date_str   = end_date.getFullYear()   + "-" + (end_date.getMonth() + 1)   + "-" + end_date.getDate();
-    var api_request_url = domain + "/api/schedule/" + start_date_str + "/" + end_date_str;
+    var api_request_url = DOMAIN + "/api/schedule/" + start_date_str + "/" + end_date_str;
 
     clear_timetable();
 
@@ -123,3 +124,42 @@ $('#next-week-button').click(function() {
     date.setDate(date.getDate() + DAYS_IN_A_WEEK);
     render_data();
 });
+
+/* ----------------- Create schedule modal ----------------- */
+$('#add-schedule').click(function() {
+    if ($('#personal').hasClass('active')) {
+        var title = document.getElementById("schedulePersonalTitleInput").value;
+        var starttime = document.getElementById("schedulePersonalStartTimeInput").value;
+        var endtime = document.getElementById("schedulePersonalEndTimeInput").value;
+
+        if (title == "" || starttime == "" || endtime == "") {
+            alert("Some fields are empty");
+            return;
+        }
+
+        if (starttime > endtime) {
+            alert("Start time cannot be after than end time");
+            return;
+        }
+
+        var api_request_url = DOMAIN + "/api/schedule/personal/" + title + "/" + starttime + "/" + endtime;
+
+        $.post({
+            url: api_request_url,
+            cache: false,
+            async: false
+        }).done(function(data) {
+            var success = data.success;
+            if (success == "true") {
+                window.location.reload();
+            } else {
+                alert("Internal schedule database error");
+            }
+        }).fail(function() {
+            alert("Server failed!");
+        });
+
+    } else { // $('#group').hasClass('active')
+
+    }
+})
