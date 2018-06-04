@@ -5,6 +5,7 @@ const DAYS_IN_A_WEEK = 7;
 
 var date = new Date();
 date.setDate(date.getDate() - date.getDay());
+date.setHours(0, 0, 0, 0);
 
 render_data();
 
