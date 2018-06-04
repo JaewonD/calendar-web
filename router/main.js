@@ -1,14 +1,26 @@
-module.exports = function(app)
-{
-    app.get('/', function(req, res) {
-        res.render('index.html');
-    });
+var express = require('express');
+var router = express.Router();
 
-    app.get('/signin', function(req, res) {
-    	res.render('signin.html');
-    });
+router.get('/', function(req, res) {
+    var session = req.session;
+    if (session.username === undefined) {
+        res.redirect('/signin');
+        return;
+    }
+    res.render('index.html');
+});
 
-    app.get('/signup', function(req, res) {
-    	res.render('signup.html');
-    });
-}
+router.get('/signin', function(req, res) {
+    var session = req.session;
+    if (session.username != undefined) {
+        res.redirect('/');
+        return;
+    }
+    res.render('signin.html');
+});
+
+router.get('/signup', function(req, res) {
+    res.render('signup.html');
+});
+
+module.exports = router;
