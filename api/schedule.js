@@ -12,20 +12,20 @@ var pool = mysql.createPool({connectionLimit: 10,
 
 var router = express.Router();
 
-router.get('/:startdate/:enddate', (req, res) => {
+router.get('/personal/:startdate/:enddate', (req, res) => {
     var sess = req.session;
     var username = sess.username;
-    console.log("Username: " + username + " requested schedule info.");
+    var userid = sess.userid;
+    console.log("Username: " + username + " requested schedule info (personal)");
     var startdate = req.params.startdate + " 00:00:00";
     var enddate = req.params.enddate + " 23:59:59";
 
-    pool.query(util.format('SELECT start_time AS starttime, end_time AS endtime, Schedules.name AS scheduleName \
-                            FROM Users, Schedules \
-                            WHERE Users.id = Schedules.user_id \
-                            AND Users.name = "%s" \
+    pool.query(util.format('SELECT start_time AS starttime, end_time AS endtime, name AS scheduleName \
+                            FROM Schedules \
+                            WHERE user_id = "%s" \
                             AND \
                             NOT( (start_time < "%s" AND end_time < "%s") OR (start_time > "%s" AND end_time > "%s") );'
-                            , username, startdate, startdate, enddate, enddate), function(err, results, fields) {
+                            , userid, startdate, startdate, enddate, enddate), function(err, results, fields) {
         var response = {};
         if (!err) {
             if (results.length == 0) {
@@ -40,6 +40,61 @@ router.get('/:startdate/:enddate', (req, res) => {
                 response["data"] = [];
                 for (var i = 0; i < results.length; i += 1) {
                     response["data"].push({"starttime": results[i].starttime, "endtime": results[i].endtime, "name": results[i].scheduleName});
+                }
+                res.json(response);
+                return;
+            }
+        } else {
+            console.log(err)
+            response["success"] = "false";
+            response["error"] = "Internal schedule db error!";
+            response["data"] = [];
+            res.json(response);
+            return;
+        }
+    });
+});
+
+router.get('/group/:startdate/:enddate', (req, res) => {
+    var sess = req.session;
+    var username = sess.username;
+    var userid = sess.userid;
+    console.log("Username: " + username + " requested schedule info (group)");
+    var startdate = req.params.startdate + " 00:00:00";
+    var enddate = req.params.enddate + " 23:59:59";
+
+    pool.query(util.format('SELECT Schedules.group_id AS groupid, start_time AS starttime, end_time AS endtime, name AS scheduleName \
+                            FROM Schedules, groups_users \
+                            WHERE groups_users.user_id = "%s" \
+                            AND Schedules.group_id = groups_users.group_id \
+                            AND \
+                            NOT( (start_time < "%s" AND end_time < "%s") OR (start_time > "%s" AND end_time > "%s") );'
+                            , userid, startdate, startdate, enddate, enddate), function(err, results, fields) {
+        var response = {};
+        if (!err) {
+            if (results.length == 0) {
+                response["success"] = "false";
+                response["error"] = "No schedule exists";
+                response["data"] = [];
+                res.json(response);
+                return;
+            } else {
+                response["success"] = "true";
+                response["error"] = "";
+                response["data"] = [];
+
+                /* Temporarily use map (response_unformat) to manage data easily */
+                var response_unformat = new Map();
+                for (var i = 0; i < results.length; i += 1) {
+                    var groupid = results[i].groupid;
+                    if (!response_unformat.has(groupid)) {
+                        response_unformat.set(groupid, []);
+                    }
+                    response_unformat.get(groupid).push({"starttime": results[i].starttime, "endtime": results[i].endtime, "name": results[i].scheduleName})
+                }
+
+                for (var [groupid, data] of response_unformat) {
+                    response["data"].push({"groupid": groupid, "data": data});
                 }
                 res.json(response);
                 return;
