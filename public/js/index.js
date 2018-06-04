@@ -1,15 +1,17 @@
+/* ----------------- Constants ----------------- */
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
 const DAYS_IN_A_WEEK = 7;
 
+/* ----------------- Page initialize ----------------- */
 var date = new Date();
 date.setDate(date.getDate() - date.getDay());
 date.setHours(0, 0, 0, 0);
 
 render_data();
 
-
+/* ----------------- Routines related to rendering schedule table ----------------- */
 function render_data() {
     render_date_label();
     render_schedule();
@@ -111,12 +113,13 @@ function render_timetable(start_date, end_date, data) {
     }
 }
 
-function go_to_prev_week() {
+/* ----------------- Add click listener ----------------- */
+$('#prev-week-button').click(function() {
     date.setDate(date.getDate() - DAYS_IN_A_WEEK);
     render_data();
-}
+});
 
-function go_to_next_week() {
+$('#next-week-button').click(function() {
     date.setDate(date.getDate() + DAYS_IN_A_WEEK);
     render_data();
-}
+});

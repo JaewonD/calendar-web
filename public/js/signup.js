@@ -26,6 +26,6 @@ $('#signup-form').submit(function() {
     }).fail(function() {
         alert("Server failed!");
     });
-    // This makes only website refreshed if login is failed.
+    // This makes only website refreshed if signup is failed.
     return !signup_success;
 });
