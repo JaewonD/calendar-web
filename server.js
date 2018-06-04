@@ -13,8 +13,9 @@ app.set('views', __dirname + '/views');
 
 app.use(express.static('public'));
 app.use('/', require('./router/main'));
-app.use('/api/user/', require('./api/user'))
-app.use('/api/schedule', require('./api/schedule'))
+app.use('/api/user/', require('./api/user'));
+app.use('/api/schedule', require('./api/schedule'));
+app.use('/api/group', require('./api/group'));
 
 app.engine('html', require('ejs').renderFile);
 

@@ -6,17 +6,26 @@ const DAYS_IN_A_WEEK = 7;
 
 const DOMAIN = "http://localhost:3000";
 
+/* ----------------- Locally fetched data ----------------- */
+var personal_schedule_data = [];
+var group_schedule_data = {};
+var group_ids = [];
+
 /* ----------------- Page initialize ----------------- */
 var date = new Date();
 date.setDate(date.getDate() - date.getDay());
 date.setHours(0, 0, 0, 0);
 
-render_data();
+fetch_and_render_group_info();
+refresh_rendered_data();
+
 
 /* ----------------- Routines related to rendering schedule table ----------------- */
-function render_data() {
+function refresh_rendered_data() {
     render_date_label();
-    render_schedule();
+    clear_timetable();
+    fetch_and_render_personal_schedule();
+    fetch_and_render_group_schedule();
 }
 
 function render_date_label() {
@@ -47,16 +56,27 @@ function render_date_label() {
     ym_label.textContent = month_string;
 }
 
-function render_schedule() {
+function fetch_and_render_personal_schedule() {
+    var api_request_url_header = DOMAIN + "/api/schedule/personal/";
+    personal_schedule_data = [];
+    fetch_and_render_schedule(api_request_url_header, true);
+}
+
+function fetch_and_render_group_schedule() {
+    var api_request_url_header = DOMAIN + "/api/schedule/group/";
+    group_schedule_data = {};
+    fetch_and_render_schedule(api_request_url_header, false);
+}
+
+
+function fetch_and_render_schedule(api_request_url_header, is_personal) {
     var start_date = new Date(date);
     var end_date = new Date(date);
     end_date.setDate(end_date.getDate() + DAYS_IN_A_WEEK - 1);
 
     var start_date_str = start_date.getFullYear() + "-" + (start_date.getMonth() + 1) + "-" + start_date.getDate();
     var end_date_str   = end_date.getFullYear()   + "-" + (end_date.getMonth() + 1)   + "-" + end_date.getDate();
-    var api_request_url = DOMAIN + "/api/schedule/" + start_date_str + "/" + end_date_str;
-
-    clear_timetable();
+    var api_request_url = api_request_url_header + start_date_str + "/" + end_date_str;
 
     $.ajax({
         url: api_request_url,
@@ -65,7 +85,18 @@ function render_schedule() {
     }).done(function(data) {
         var success = data.success;
         if (success == "true") {
-            render_timetable(start_date, end_date, data.data);
+            if (is_personal) {
+                personal_schedule_data = data.data;
+                render_personal_schedule();
+            } else {
+                var group_schedule_data_raw = data.data;
+                for (var i = 0; i < group_schedule_data_raw.length; i += 1) {
+                    var group_id = group_schedule_data_raw[i]["groupid"];
+                    var group_schedule_data_with_id = group_schedule_data_raw[i]["data"];
+                    group_schedule_data[group_id] = group_schedule_data_with_id;
+                }
+                render_group_schedule();
+            }
         } else {
             if (data.error == "No schedule exists") {
                 // Do nothing
@@ -88,7 +119,32 @@ function clear_timetable() {
     }
 }
 
-function render_timetable(start_date, end_date, data) {
+function render_personal_schedule() {
+    render_schedule(personal_schedule_data);
+}
+
+function render_group_schedule() {
+    /* Based on the check status, render group schedule. */
+    for (var i = 0; i < group_ids.length; i += 1) {
+        var group_id = group_ids[i];
+        var checkbox = document.getElementById('group-check-' + group_id);
+        if (checkbox.checked && group_schedule_data[group_id] != null) {
+            render_schedule(group_schedule_data[group_id]);
+        }
+    }
+}
+
+function render_all_schedule() {
+    render_personal_schedule();
+    render_group_schedule();
+
+}
+
+function render_schedule(data) {
+    var start_date = new Date(date);
+    var end_date = new Date(date);
+    end_date.setDate(end_date.getDate() + DAYS_IN_A_WEEK - 1);
+
     var colors = ["#7fffd4", "#229922", "#1199aa"];
     for (var i = 0; i < data.length; i += 1) {
         var start_dt_event      = data[i].starttime;
@@ -114,15 +170,58 @@ function render_timetable(start_date, end_date, data) {
     }
 }
 
+
+/* ----------------- Routines related to group info ----------------- */
+function fetch_and_render_group_info() {
+    var api_request_url = DOMAIN + "/api/group/";
+
+    $.ajax({
+        url: api_request_url,
+        cache: false,
+        async: false
+    }).done(function(data) {
+        var success = data.success;
+        if (success == "true") {
+            render_group_info(data.data);
+        } else {
+            alert("Internal group database error");
+        }
+    }).fail(function() {
+        alert("Server failed!");
+    });
+}
+
+function render_group_info(group_info) {
+    for (var i = 0; i < group_info.length; i += 1) {
+        var group_id   = group_info[i]["groupId"];
+        var group_name = group_info[i]["groupName"];
+        group_ids.push(group_id);
+
+        var checkbox_id = "group-check-" + group_id;
+        $('#group-list').append(
+            `
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="${checkbox_id}">
+              <label class="custom-control-label" for="${checkbox_id}">${group_name}</label>
+            </div>
+            `
+        );
+        $('#' + checkbox_id).click(function() {
+            clear_timetable();
+            render_all_schedule();
+        })
+    }
+}
+
 /* ----------------- Add click listener ----------------- */
 $('#prev-week-button').click(function() {
     date.setDate(date.getDate() - DAYS_IN_A_WEEK);
-    render_data();
+    refresh_rendered_data();
 });
 
 $('#next-week-button').click(function() {
     date.setDate(date.getDate() + DAYS_IN_A_WEEK);
-    render_data();
+    refresh_rendered_data();
 });
 
 /* ----------------- Create schedule modal ----------------- */
