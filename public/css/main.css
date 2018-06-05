@@ -18,22 +18,22 @@
 	table-layout: fixed;
 }
 
-.table th {
+.table-schedule th {
 	font-weight: 600;
 }
 
-.table td, .table th {
+.table-schedule td, .table-schedule th {
 	padding: 0 0.75em 1.5em 0.75em;
 	border-top: 0;
 	border-bottom: 1px solid #dee2e6;
 	border-right: 1px solid #dee2e6;
 }
 
-.table thead th {
+.table-schedule thead th {
 	padding: 0.75em;
 }
 
-.table-schedule .date {
+.table-schedule-dv .date {
 	font-size:30px;
 	font-weight: 400;
 	margin-right: 5px
@@ -61,8 +61,41 @@ input#groupMemberInput {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
-/*
-.first-group-member {
-	border-top-left-radius: 0 !important;
-	border-top-right-radius: 0 !important;
-}*/
+
+.table-group-schedule-dv {
+	height: 50%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	padding: 0;		
+}
+
+.table-group-schedule{
+	height: 50%;
+	overflow-y: scroll;
+	padding: 0;		
+}
+
+.table-group-schedule td, .table-group-schedule th {
+	padding: 0;
+	border-top: 0;
+	border-bottom: 1px solid #dee2e6;
+	border-right: 1px solid #dee2e6;
+}
+
+.table-group-schedule-dv .date {
+	font-weight: 600;
+}
+
+.table-group-schedule th {
+	font-weight: 600;
+}
+
+.table-group-schedule .dd {
+	font-size: 10px;
+	font-weight: 300;
+}
+
+.div-date-group {
+	font-size: 18px;
+	font-weight: 300;
+}
