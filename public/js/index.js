@@ -7,18 +7,51 @@ const DAYS_IN_A_WEEK = 7;
 const DOMAIN = "http://localhost:3000";
 
 /* ----------------- Locally fetched data ----------------- */
+/* Stores personal/group schedule data on current week - data depends on which week it's viewing */
 var personal_schedule_data = [];
 var group_schedule_data = {};
+/* Stores group ids that the user belongs to */
 var group_ids = [];
+/* Stores all member data fetched from server (should be redesigned due to privacy problem) */
+var member_names_to_ids = {};
+var member_names = [];
+/* Stores name in create-group modal */
+var create_group_modal_members = [];
 
 /* ----------------- Page initialize ----------------- */
 var date = new Date();
 date.setDate(date.getDate() - date.getDay());
 date.setHours(0, 0, 0, 0);
 
+fetch_all_members();
 fetch_and_render_group_info();
 refresh_rendered_data();
 
+/* ----------------- Routines related to initialization ----------------- */
+function fetch_all_members() {
+    var api_request_url = DOMAIN + "/api/user/fetchall/";
+
+    $.ajax({
+        url: api_request_url,
+        cache: false,
+        async: false
+    }).done(function(data) {
+        var success = data.success;
+        if (success == "true") {
+            var members = data.data;
+            for (var i = 0; i < members.length; i += 1) {
+                var id = members[i]["id"];
+                var name = members[i]["name"];
+                member_names.push(name);
+                member_names_to_ids[name] = id;
+            }
+        } else {
+            alert("Internal user database error");
+        }
+    }).fail(function() {
+        alert("Server failed!");
+    });
+}
 
 /* ----------------- Routines related to rendering schedule table ----------------- */
 function refresh_rendered_data() {
@@ -224,7 +257,7 @@ $('#next-week-button').click(function() {
     refresh_rendered_data();
 });
 
-/* ----------------- Create schedule modal ----------------- */
+/* ----------------- Create-schedule modal ----------------- */
 $('#add-schedule').click(function() {
     if ($('#personal').hasClass('active')) {
         var title = document.getElementById("schedulePersonalTitleInput").value;
@@ -261,4 +294,66 @@ $('#add-schedule').click(function() {
     } else { // $('#group').hasClass('active')
 
     }
-})
+});
+
+/* ----------------- Create-group modal ----------------- */
+$('#groupMemberInput').autocomplete({
+    source: member_names,
+    minLength: 0,
+    select: function(event, ui) {
+        var name = ui.item.value;
+        var id = member_names_to_ids[name];
+        if (create_group_modal_members.includes(name)) {
+            alert("The name already exists!");
+            return;
+        }
+        $('#groupMemberList').append(
+            `
+            <li class="list-group-item list-group-item-action add-group-members" id="add-group-members-${id}">${name}</li>
+            `
+        );
+        create_group_modal_members.push(name);
+        ui.item.value = "";
+    }
+}).on("focus", function() {
+    $(this).autocomplete("search");
+});
+
+$('#add-group').click(function() {
+    var groupname = document.getElementById("groupNameInput").value;
+
+    if (groupname == "") {
+        alert("Group name is required field.");
+        return;
+    }
+
+    if (create_group_modal_members.length == 0) {
+        alert("At least one member should be invited to the group");
+        return;
+    }
+
+    var members_html = document.getElementsByClassName("add-group-members");
+    var member_ids = [];
+    for (var i = 0; i < members_html.length; i += 1) {
+        member_ids.push(members_html[i].id.substring(18));
+    }
+
+    var api_request_url = DOMAIN + "/api/group/add/" + groupname + "/" + member_ids.join("|");
+    console.log(api_request_url);
+
+    $.post({
+        url: api_request_url,
+        cache: false,
+        async: false
+    }).done(function(data) {
+        var success = data.success;
+        if (success == "true") {
+            window.location.reload();
+        } else {
+            alert("Internal group database error");
+        }
+    }).fail(function() {
+        alert("Server failed!");
+    });
+
+});

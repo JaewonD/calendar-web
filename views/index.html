@@ -187,22 +187,24 @@
                   </div>
                   <div class="modal-body">
                     <form class="form-group pt-2">
-                      <label for="groupTitleInput"><h5>Title</h5></label>
-                      <input type="text" class="mb-4 form-control" id="groupTitleInput">
-                      <label for="groupTitleInput"><h5>Member</h5></label>
+                      <label for="groupNameInput"><h5>Group Name</h5></label>
+                      <input type="text" class="mb-4 form-control" id="groupNameInput">
+                      <label for="groupMemberInput"><h5>Member</h5></label>
                       <input type="text" class="form-control" id="groupMemberInput">
-                      <ul class="list-group group-member">
+                      <ul class="list-group group-member" id="groupMemberList">
                         <!-- TO DO: Member 추가해서 집어넣는 js 추가 -->
+                        <!-- This is placeholder for group-create member list!
                         <li class="list-group-item list-group-item-action">Member A</li>
                         <li class="list-group-item list-group-item-action">Member B</li>
                         <li class="list-group-item list-group-item-action">Member C</li>
                         <li class="list-group-item list-group-item-action">Member D</li>
+                        -->
                       </ul>
                     </form>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Add Group</button>
+                    <button type="button" class="btn btn-primary" id="add-group">Add Group</button>
                   </div>
                 </div>
               </div>

@@ -3,3 +3,7 @@
 body {
     background-color: #f5f5f5;
 }
+
+ul.ui-autocomplete {
+  z-index: 1100;
+}
