@@ -13,11 +13,11 @@
       <div class="div-date col text-center mb-3">
         <div class="row">
           <div class="col-1">
-            <a id="prev-week-button">Prev</a>
+            <a href="#" id="prev-week-button">Prev</a>
           </div>
           <div class="div-date text-center col" id="ym-label">2018 May - 2018 June</div>
           <div class="col-1 mr-2">
-            <a id="next-week-button">Next</a>
+            <a href="#" id="next-week-button">Next</a>
           </div>
         </div>
       </div>
@@ -27,10 +27,10 @@
 
         <!-- Add Schedule Modal -->
         <div class="modal fade" id="modal-add-schedule" tabindex="-1" role="dialog" aria-labelledby="modalAddScheduleTitle" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header"> 
-                <h5 class="modal-title" id="modalAddScheduleTitle">Add New Group</h5>
+                <h5 class="modal-title" id="modalAddScheduleTitle">Add New Schedule</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -65,21 +65,81 @@
 
                   <!-- Group Tab-->
                   <div class="tab-pane fade" id="group" role="tabpanel" aria-labelledby="group-tab">
-                    <form class="form-group pt-4">
-                      <label for="scheduleGroupTitleInput"><h5>Title</h5></label>
-                      <input type="text" class="mb-4 form-control" id="scheduleGroupTitleInput">
-                      <div class="row mb-4">
-                        <div class="col">
-                          <label for="scheduleGroupStartTimeInput"><h5>Start Time</h5></label>
-                          <input type="datetime-local" class="form-control" id="scheduleGroupStartTimeInput">
+                    <form class="form-group row pt-4">
+                      <div class="col col-5">
+                        <label for="scheduleGroupTitleInput"><h5>Title</h5></label>
+                        <input type="text" class="mb-4 form-control" id="scheduleGroupTitleInput">
+                        <div class="mb-4">
+                          <div class="form-group">
+                            <label for="scheduleGroupStartTimeInput"><h5>Start Time</h5></label>
+                            <input type="datetime-local" class="form-control" id="scheduleGroupStartTimeInput">
+                          </div>
+                          <div class="form-group">
+                            <label for="scheduleGroupEndTimeInput"><h5>End Time</h5></label>
+                            <input type="datetime-local" class="form-control" id="scheduleGroupEndTimeInput">
+                          </div>
                         </div>
-                        <div class="col">
-                          <label for="scheduleGroupEndTimeInput"><h5>End Time</h5></label>
-                          <input type="datetime-local" class="form-control" id="scheduleGroupEndTimeInput">
+                        <label for="scheduleGroupSelectInput"><h5>Participating Group</h5></label>
+                        <input type="text" class="mb-4 form-control" id="scheduleGroupSelectInput">
+                      </div>
+                      <div class="col col-7">
+                        <div class="div-date-group row mb-3">
+                          <div class="col col-2 my-auto">
+                            <a href="#" id="prev-week-button-group">Prev</a>
+                          </div>
+                          <div class="div-date text-center col" id="ym-label-group">2018 May - 2018 June</div>
+                          <div class="col col-2 my-auto">
+                            <a href="#" id="next-week-button-group">Next</a>
+                          </div>
+                        </div>
+                        <div class="col table-group-schedule-dv">
+                          <table class="table table-group-schedule" id="schedule">
+                            <thead>
+                              <tr>
+                                <th scope="col"></th>
+                                <th scope="col" class="pl-1">
+                                  <span class="date" id="date-group-value-0">27</span>
+                                  <span class="dd text-danger">Sun</span>
+                                </th>
+                                <th scope="col" class="pl-1">
+                                  <span class="date" id="date-group-value-1">28</span>
+                                  <span class="dd">Mon</span>
+                                </th>
+                                <th scope="col" class="pl-1">
+                                  <span class="date" id="date-group-value-2">29</span>
+                                  <span class="dd">Tue</span>
+                                </th>
+                                <th scope="col" class="pl-1">
+                                  <span class="date" id="date-group-value-3">30</span>
+                                  <span class="dd">Wed</span>
+                                </th>
+                                <th scope="col" class="pl-1">
+                                  <span class="date" id="date-group-value-4">31</span>
+                                  <span class="dd">Wed</span>
+                                </th>
+                                <th scope="col" class="pl-1">
+                                  <span class="date" id="date-group-value-5">1</span>
+                                  <span class="dd">Fri</span>
+                                </th>
+                                <th scope="col" class="pl-1">
+                                  <span class="date" id="date-group-value-6">2</span>
+                                  <span class="dd text-primary">Sat</span>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% for (var h = 0; h < 24; h++) { %>
+                              <tr>
+                                <th scope="row"><%= h %>:00</th>
+                                <% for (var i = 0; i < 7; i++) { %>
+                                <td id="timecell-group-<%=h %>-<%=i %>"></td>
+                                <% } %>
+                              </tr>
+                              <% } %>
+                            </tbody>
+                          </table>
                         </div>
                       </div>
-                      <label for="scheduleGroupSelectInput"><h5>Participating Group</h5></label>
-                      <input type="text" class="mb-4 form-control" id="scheduleGroupSelectInput">
                     </form>
                   </div>
                 </div>
@@ -88,8 +148,6 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="add-schedule">Add Schedule</button>
               </div>
-
-              <!-- TO DO : Calendar 추가 -->
             </div>
           </div>
         </div>
@@ -112,18 +170,17 @@
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="customCheck4">
             <label class="custom-control-label" for="customCheck4">Group D</label>
-          </div>
-          -->
+          </div>-->
 
           <div class="div-add-group">
             <a class="link" data-toggle="modal" data-target="#modal-add-group" href="#">Add New Group</a>
-            
+
             <!-- Add Group Modal -->
-            <div class="modal fade" id="modal-add-group" tabindex="-1" role="dialog" aria-labelledby="modalAddGropTitle" aria-hidden="true">
+            <div class="modal fade" id="modal-add-group" tabindex="-1" role="dialog" aria-labelledby="modalAddGroupTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="modalAddGropTitle">Add New Group</h5>
+                    <h5 class="modal-title" id="modalAddGroupTitle">Add New Group</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -156,9 +213,9 @@
 
       </div>
       <div class="col">
-        <div class="table-schedule table-responsive">
+        <div class="table-schedule-dv table-responsive">
           <!-- TO DO: schedule list 받기 -->
-          <table class="table" id="schedule">
+          <table class="table table-schedule" id="schedule">
             <thead>
               <tr>
                 <th scope="col"></th>
@@ -191,13 +248,44 @@
         </div>
       </div>
     </div>
+    <div class="schedule-detail-test" style="position: relative;float: right;">
+      <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-schedule-detail">Schedule Detail Modal Test</button>
+    </div>
+    <!-- Schedule Detail Modal -->
+    <div class="modal fade" id="modal-schedule-detail" tabindex="-1" role="dialog" aria-labelledby="modalScheduleDetailTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalScheduleDetailTitle">Schedule Detail</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h2 class="mb-3">Title</h2>
+            <div class="schedule-info row mb-3">
+              <div class="col col-3 text-primary font-weight-bold">Start Time</div>
+              <div class="col col-9" id="schedule-detail-start-time">2018-06-05 09:00</div>
+              <div class="w-100"></div>
+              <div class="col col-3 text-primary font-weight-bold">End Time</div>
+              <div class="col col-9" id="schedule-detail-start-time">2018-06-05 10:00</div>
+            </div>
+            <div class="schedule-info-group" id="schedule-info-group-div">
+              <p class="font-weight-bold">Participated Group:</p>
+              <p class="ml-4" id="schedule-info-group-name">Group A</p>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <% include ./footer %>
-
-</body>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
   <script src="js/index.js"></script>
+</body>
 </html>
