@@ -148,8 +148,6 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="add-schedule">Add Schedule</button>
               </div>
-
-              <!-- TO DO : Calendar 추가 -->
             </div>
           </div>
         </div>
@@ -172,88 +170,87 @@
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="customCheck4">
             <label class="custom-control-label" for="customCheck4">Group D</label>
-          </div>
-        -->
+          </div>-->
 
-        <div class="div-add-group">
-          <a class="link" data-toggle="modal" data-target="#modal-add-group" href="#">Add New Group</a>
+          <div class="div-add-group">
+            <a class="link" data-toggle="modal" data-target="#modal-add-group" href="#">Add New Group</a>
 
-          <!-- Add Group Modal -->
-          <div class="modal fade" id="modal-add-group" tabindex="-1" role="dialog" aria-labelledby="modalAddGropTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="modalAddGropTitle">Add New Group</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form class="form-group pt-2">
-                    <label for="groupTitleInput"><h5>Title</h5></label>
-                    <input type="text" class="mb-4 form-control" id="groupTitleInput">
-                    <label for="groupTitleInput"><h5>Member</h5></label>
-                    <input type="text" class="form-control" id="groupMemberInput">
-                    <ul class="list-group group-member">
-                      <!-- TO DO: Member 추가해서 집어넣는 js 추가 -->
-                      <li class="list-group-item list-group-item-action">Member A</li>
-                      <li class="list-group-item list-group-item-action">Member B</li>
-                      <li class="list-group-item list-group-item-action">Member C</li>
-                      <li class="list-group-item list-group-item-action">Member D</li>
-                    </ul>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Add Group</button>
+            <!-- Add Group Modal -->
+            <div class="modal fade" id="modal-add-group" tabindex="-1" role="dialog" aria-labelledby="modalAddGropTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalAddGropTitle">Add New Group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form class="form-group pt-2">
+                      <label for="groupTitleInput"><h5>Title</h5></label>
+                      <input type="text" class="mb-4 form-control" id="groupTitleInput">
+                      <label for="groupTitleInput"><h5>Member</h5></label>
+                      <input type="text" class="form-control" id="groupMemberInput">
+                      <ul class="list-group group-member">
+                        <!-- TO DO: Member 추가해서 집어넣는 js 추가 -->
+                        <li class="list-group-item list-group-item-action">Member A</li>
+                        <li class="list-group-item list-group-item-action">Member B</li>
+                        <li class="list-group-item list-group-item-action">Member C</li>
+                        <li class="list-group-item list-group-item-action">Member D</li>
+                      </ul>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Add Group</button>
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
-
         </div>
-      </div>
 
-    </div>
-    <div class="col">
-      <div class="table-schedule-dv table-responsive">
-        <!-- TO DO: schedule list 받기 -->
-        <table class="table table-schedule" id="schedule">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col">
-                <span class="date" id="date-value-0">27</span>
-                <span class="text-danger">Sun</span>
-              </th>
-              <th scope="col"><span class="date" id="date-value-1">28</span>Mon</th>
-              <th scope="col"><span class="date" id="date-value-2">29</span>Tue</th>
-              <th scope="col"><span class="date" id="date-value-3">30</span>Wed</th>
-              <th scope="col"><span class="date" id="date-value-4">31</span>Thu</th>
-              <th scope="col"><span class="date" id="date-value-5">1</span>Fri</th>
-              <th scope="col">
-                <span class="date" id="date-value-6">2</span>
-                <span class="text-primary">Sat</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <% for (var h = 0; h < 24; h++) { %>
-            <tr>
-              <th scope="row"><%= h %>:00</th>
-              <% for (var i = 0; i < 7; i++) { %>
-              <td id="timecell-<%=h %>-<%=i %>"></td>
+      </div>
+      <div class="col">
+        <div class="table-schedule-dv table-responsive">
+          <!-- TO DO: schedule list 받기 -->
+          <table class="table table-schedule" id="schedule">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">
+                  <span class="date" id="date-value-0">27</span>
+                  <span class="text-danger">Sun</span>
+                </th>
+                <th scope="col"><span class="date" id="date-value-1">28</span>Mon</th>
+                <th scope="col"><span class="date" id="date-value-2">29</span>Tue</th>
+                <th scope="col"><span class="date" id="date-value-3">30</span>Wed</th>
+                <th scope="col"><span class="date" id="date-value-4">31</span>Thu</th>
+                <th scope="col"><span class="date" id="date-value-5">1</span>Fri</th>
+                <th scope="col">
+                  <span class="date" id="date-value-6">2</span>
+                  <span class="text-primary">Sat</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (var h = 0; h < 24; h++) { %>
+              <tr>
+                <th scope="row"><%= h %>:00</th>
+                <% for (var i = 0; i < 7; i++) { %>
+                <td id="timecell-<%=h %>-<%=i %>"></td>
+                <% } %>
+              </tr>
               <% } %>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<% include ./footer %>
-<script src="js/index.js"></script>
+  <% include ./footer %>
+  <script src="js/index.js"></script>
 </body>
 </html>
