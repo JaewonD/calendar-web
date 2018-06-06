@@ -82,4 +82,26 @@ router.post('/signup/:username/:password', (req, res) => {
     });
 });
 
+router.get('/fetchall', (req, res) => {
+    console.log("fetchall members request arrived");
+
+    pool.query('SELECT * FROM Users;', function(err, results, fields) {
+        var response = {};
+        if (!err) {
+            response["success"] = "true";
+            response["error"] = "";
+            response["data"] = [];
+            for (var i = 0; i < results.length; i += 1) {
+                response["data"].push({"id": results[i].id, "name": results[i].name});
+            }
+            res.json(response);
+        } else {
+            console.log(err)
+            response["success"] = "false";
+            response["error"] = "Internal fetchall server error!";
+            response["data"] = [];
+            res.json(response);
+        }
+    });
+})
 module.exports = router;
