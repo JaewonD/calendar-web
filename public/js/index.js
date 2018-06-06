@@ -12,11 +12,15 @@ var personal_schedule_data = [];
 var group_schedule_data = {};
 /* Stores group ids that the user belongs to */
 var group_ids = [];
+/* Stores group to names that the user belongs to */
+var group_ids_to_names = {};
 /* Stores all member data fetched from server (should be redesigned due to privacy problem) */
 var member_names_to_ids = {};
 var member_names = [];
 /* Stores name in create-group modal */
 var create_group_modal_members = [];
+/* Stores cell id to schedule json element */
+var cell_to_schedule = {};
 
 /* ----------------- Page initialize ----------------- */
 var date = new Date();
@@ -145,15 +149,17 @@ function fetch_and_render_schedule(api_request_url_header, is_personal) {
 function clear_timetable() {
     for (var day_offset = 0; day_offset < DAYS_IN_A_WEEK; day_offset += 1) {
         for (var hour_start = 0; hour_start < 24; hour_start += 1) {
-            var cell = document.getElementById("timecell-" + hour_start + "-" + day_offset);
+            var cell_id = "timecell-" + hour_start + "-" + day_offset;
+            var cell = document.getElementById(cell_id);
             cell.style.backgroundColor = null;
             cell.style.borderBottomColor = null;
+            $("#" + cell_id).unbind("click");
         }
     }
 }
 
 function render_personal_schedule() {
-    render_schedule(personal_schedule_data);
+    render_schedule(personal_schedule_data, 0);
 }
 
 function render_group_schedule() {
@@ -162,7 +168,7 @@ function render_group_schedule() {
         var group_id = group_ids[i];
         var checkbox = document.getElementById('group-check-' + group_id);
         if (checkbox.checked && group_schedule_data[group_id] != null) {
-            render_schedule(group_schedule_data[group_id]);
+            render_schedule(group_schedule_data[group_id], group_id);
         }
     }
 }
@@ -173,7 +179,7 @@ function render_all_schedule() {
 
 }
 
-function render_schedule(data) {
+function render_schedule(data, group_id) {
     var start_date = new Date(date);
     var end_date = new Date(date);
     end_date.setDate(end_date.getDate() + DAYS_IN_A_WEEK - 1);
@@ -187,7 +193,8 @@ function render_schedule(data) {
 
         for (var day_offset = 0; day_offset < DAYS_IN_A_WEEK; day_offset += 1) {
             for (var hour_start = 0; hour_start < 24; hour_start += 1) {
-                var cell = document.getElementById("timecell-" + hour_start + "-" + day_offset);
+                var target_cell_id = "timecell-" + hour_start + "-" + day_offset;
+                var cell = document.getElementById(target_cell_id);
 
                 // Check if the cell should be colored
                 var target_cell_date = new Date(date);
@@ -197,6 +204,30 @@ function render_schedule(data) {
                     target_cell_date.getTime() < end_dt_event_date.getTime()) {
                     cell.style.backgroundColor = colors[i % 3];
                     cell.style.borderBottomColor = colors[i % 3];
+
+                    var schedule = data[i];
+                    schedule["groupId"] = group_id;
+                    cell_to_schedule[target_cell_id] = schedule;
+
+                    // Implement onClick on cell
+                    $("#" + target_cell_id).click(function() {
+                        var schedule = cell_to_schedule[this.id];
+                        var options = {
+                            weekday: "long", year: "numeric", month: "short",
+                            day: "numeric", hour: "2-digit", minute: "2-digit"
+                        };
+
+                        $("#modal-schedule-detail").modal('show');
+                        $("#modal-schedule-title").text(schedule.name);
+                        $("#modal-schedule-id").text(schedule.id);
+                        $("#schedule-detail-start-time").text(new Date(schedule.starttime).toLocaleTimeString("en-US", options));
+                        $("#schedule-detail-end-time")  .text(new Date(schedule.endtime).toLocaleTimeString("en-US", options))
+                        if (schedule.groupId != 0) {
+                            $("#schedule-info-group-name").text(group_ids_to_names[schedule.groupId]);
+                        } else {
+                            $("#schedule-info-group-name").text("No group");
+                        }
+                    });
                 }
             }
         }
@@ -229,6 +260,7 @@ function render_group_info(group_info) {
         var group_id   = group_info[i]["groupId"];
         var group_name = group_info[i]["groupName"];
         group_ids.push(group_id);
+        group_ids_to_names[group_id] = group_name;
 
         var checkbox_id = "group-check-" + group_id;
         $('#group-list').append(
@@ -355,5 +387,30 @@ $('#add-group').click(function() {
     }).fail(function() {
         alert("Server failed!");
     });
-
 });
+
+
+/* ----------------- Event-detail modal ----------------- */
+$('#modal-schedule-detail-delete').click(function() {
+    var scheduleId = $('#modal-schedule-id').text();
+
+    var api_request_url = DOMAIN + "/api/schedule/" + scheduleId;
+    console.log(api_request_url);
+
+    $.ajax({
+        url: api_request_url,
+        type: 'DELETE',
+        cache: false,
+        async: false
+    }).done(function(data) {
+        var success = data.success;
+        if (success == "true") {
+            window.location.reload();
+        } else {
+            alert("Internal schedule database error");
+        }
+    }).fail(function() {
+        alert("Server failed!");
+    });
+});
+

@@ -264,13 +264,14 @@
             </button>
           </div>
           <div class="modal-body">
-            <h2 class="mb-3">Title</h2>
+            <h2 class="mb-3" id="modal-schedule-title">Title</h2>
+            <div id="modal-schedule-id">ID value that is hidden</div>
             <div class="schedule-info row mb-3">
               <div class="col col-3 text-primary font-weight-bold">Start Time</div>
               <div class="col col-9" id="schedule-detail-start-time">2018-06-05 09:00</div>
               <div class="w-100"></div>
               <div class="col col-3 text-primary font-weight-bold">End Time</div>
-              <div class="col col-9" id="schedule-detail-start-time">2018-06-05 10:00</div>
+              <div class="col col-9" id="schedule-detail-end-time">2018-06-05 10:00</div>
             </div>
             <div class="schedule-info-group" id="schedule-info-group-div">
               <p class="font-weight-bold">Participated Group:</p>
@@ -280,7 +281,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger">Delete</button>
+            <button type="button" class="btn btn-danger" id="modal-schedule-detail-delete">Delete</button>
           </div>
         </div>
       </div>
