@@ -10,9 +10,10 @@ const DOMAIN = "http://localhost:3000";
 /* Stores personal/group schedule data on current week - data depends on which week it's viewing */
 var personal_schedule_data = [];
 var group_schedule_data = {};
-/* Stores group ids that the user belongs to */
+/* Stores group ids and names that the user belongs to */
 var group_ids = [];
-/* Stores group to names that the user belongs to */
+var group_names = [];
+/* Stores group id to names that the user belongs to */
 var group_ids_to_names = {};
 /* Stores all member data fetched from server (should be redesigned due to privacy problem) */
 var member_names_to_ids = {};
@@ -260,6 +261,7 @@ function render_group_info(group_info) {
         var group_id   = group_info[i]["groupId"];
         var group_name = group_info[i]["groupName"];
         group_ids.push(group_id);
+        group_names.push(group_name);
         group_ids_to_names[group_id] = group_name;
 
         var checkbox_id = "group-check-" + group_id;
@@ -291,41 +293,50 @@ $('#next-week-button').click(function() {
 
 /* ----------------- Create-schedule modal ----------------- */
 $('#add-schedule').click(function() {
+    var title, starttime, endtime, api_request_url;
+    var groupid;
+
     if ($('#personal').hasClass('active')) {
-        var title = document.getElementById("schedulePersonalTitleInput").value;
-        var starttime = document.getElementById("schedulePersonalStartTimeInput").value;
-        var endtime = document.getElementById("schedulePersonalEndTimeInput").value;
-
-        if (title == "" || starttime == "" || endtime == "") {
-            alert("Some fields are empty");
-            return;
-        }
-
-        if (starttime > endtime) {
-            alert("Start time cannot be after than end time");
-            return;
-        }
-
-        var api_request_url = DOMAIN + "/api/schedule/personal/" + title + "/" + starttime + "/" + endtime;
-
-        $.post({
-            url: api_request_url,
-            cache: false,
-            async: false
-        }).done(function(data) {
-            var success = data.success;
-            if (success == "true") {
-                window.location.reload();
-            } else {
-                alert("Internal schedule database error");
-            }
-        }).fail(function() {
-            alert("Server failed!");
-        });
-
+        title = document.getElementById("schedulePersonalTitleInput").value;
+        starttime = document.getElementById("schedulePersonalStartTimeInput").value;
+        endtime = document.getElementById("schedulePersonalEndTimeInput").value;
+        api_request_url = DOMAIN + "/api/schedule/personal/" + title + "/" + starttime + "/" + endtime;
     } else { // $('#group').hasClass('active')
-
+        title = document.getElementById("scheduleGroupTitleInput").value;
+        starttime = document.getElementById("scheduleGroupStartTimeInput").value;
+        endtime = document.getElementById("scheduleGroupEndTimeInput").value;
+        groupid = $('#scheduleGroupSelectedId').text();
+        if (groupid == "ID value that is hidden") {
+            alert("You must select a group.");
+            return;
+        }
+        api_request_url = DOMAIN + "/api/schedule/group/" + groupid + "/" + title + "/" + starttime + "/" + endtime;
     }
+
+    if (title == "" || starttime == "" || endtime == "") {
+        alert("Some fields are empty");
+        return;
+    }
+
+    if (starttime > endtime) {
+        alert("Start time cannot be after than end time");
+        return;
+    }
+
+    $.post({
+        url: api_request_url,
+        cache: false,
+        async: false
+    }).done(function(data) {
+        var success = data.success;
+        if (success == "true") {
+            window.location.reload();
+        } else {
+            alert("Internal schedule database error");
+        }
+    }).fail(function() {
+        alert("Server failed!");
+    });
 });
 
 /* ----------------- Create-group modal ----------------- */

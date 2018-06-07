@@ -81,6 +81,8 @@
                         </div>
                         <label for="scheduleGroupSelectInput"><h5>Participating Group</h5></label>
                         <input type="text" class="mb-4 form-control" id="scheduleGroupSelectInput">
+                        <label><h6 id="scheduleGroupSelected">Group selected: None</h6></label>
+                        <div id="scheduleGroupSelectedId" style="display: none;">ID value that is hidden</div>
                       </div>
                       <div class="col col-7">
                         <div class="div-date-group row mb-3">
@@ -265,7 +267,7 @@
           </div>
           <div class="modal-body">
             <h2 class="mb-3" id="modal-schedule-title">Title</h2>
-            <div id="modal-schedule-id">ID value that is hidden</div>
+            <div id="modal-schedule-id" style="display: none;">ID value that is hidden</div>
             <div class="schedule-info row mb-3">
               <div class="col col-3 text-primary font-weight-bold">Start Time</div>
               <div class="col col-9" id="schedule-detail-start-time">2018-06-05 09:00</div>
@@ -290,5 +292,6 @@
 
   <% include ./footer %>
   <script src="js/index.js"></script>
+  <script src="js/create-schedule-group.js"></script>
 </body>
 </html>
