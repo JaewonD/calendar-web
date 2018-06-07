@@ -112,6 +112,64 @@ router.get('/group/:startdate/:enddate', (req, res) => {
     });
 });
 
+router.get('/groupMemberOwned/:startdate/:enddate', (req, res) => {
+    var sess = req.session;
+    var username = sess.username;
+    var userid = sess.userid;
+    console.log("Username: " + username + " requested schedule info (groupMemberOwned)");
+    var startdate = req.params.startdate + " 00:00:00";
+    var enddate = req.params.enddate + " 23:59:59";
+
+    pool.query(util.format('SELECT DISTINCT id, gu1.group_id AS groupid, start_time AS starttime, end_time AS endtime \
+                            FROM groups_users AS gu1, groups_users AS gu2, groups_users AS gu3, Schedules AS S \
+                            WHERE gu1.user_id = "%s" \
+                            AND gu1.group_id = gu2.group_id \
+                            AND (gu2.user_id = S.user_id \
+                                 OR (gu2.user_id = gu3.user_id AND gu3.group_id = S.group_id)) \
+                            AND \
+                            NOT( (start_time < "%s" AND end_time < "%s") OR (start_time > "%s" AND end_time > "%s") );'
+                            , userid, startdate, startdate, enddate, enddate), function(err, results, fields) {
+        var response = {};
+        if (!err) {
+            if (results.length == 0) {
+                response["success"] = "false";
+                response["error"] = "No schedule exists";
+                response["data"] = [];
+                res.json(response);
+                return;
+            } else {
+                response["success"] = "true";
+                response["error"] = "";
+                response["data"] = [];
+
+                /* Temporarily use map (response_unformat) to manage data easily */
+                var response_unformat = new Map();
+                for (var i = 0; i < results.length; i += 1) {
+                    var groupid = results[i].groupid;
+                    if (!response_unformat.has(groupid)) {
+                        response_unformat.set(groupid, []);
+                    }
+                    response_unformat.get(groupid).push({"id": results[i].id, "starttime": results[i].starttime,
+                                                         "endtime": results[i].endtime});
+                }
+
+                for (var [groupid, data] of response_unformat) {
+                    response["data"].push({"groupid": groupid, "data": data});
+                }
+                res.json(response);
+                return;
+            }
+        } else {
+            console.log(err)
+            response["success"] = "false";
+            response["error"] = "Internal schedule db error!";
+            response["data"] = [];
+            res.json(response);
+            return;
+        }
+    });
+});
+
 router.post('/personal/:title/:startdate/:enddate', (req, res) => {
     var sess = req.session;
     var username = sess.username;
@@ -138,7 +196,37 @@ router.post('/personal/:title/:startdate/:enddate', (req, res) => {
             return;
         }
     });
+});
+
+router.post('/group/:groupid/:title/:startdate/:enddate', (req, res) => {
+    var sess = req.session;
+    var username = sess.username;
+    var userid = sess.userid;
+    console.log("Username: " + username + " requested to create schedule. (group)");
+    var startdate = req.params.startdate;
+    var enddate = req.params.enddate;
+    var title = req.params.title;
+    var groupid = req.params.groupid;
+
+    pool.query(util.format('INSERT INTO Schedules(user_id, group_id, start_time, end_time, name) \
+                            VALUES(NULL, "%s", "%s", "%s", "%s");'
+                            , groupid, startdate, enddate, title), function(err, results, fields) {
+        var response = {};
+        if (!err) {
+            response["success"] = "true";
+            response["error"] = "";
+            res.json(response);
+            return;
+        } else {
+            console.log(err)
+            response["success"] = "false";
+            response["error"] = "Internal schedule db error!";
+            res.json(response);
+            return;
+        }
+    });
 })
+
 
 router.delete('/:scheduleId', (req, res) => {
     var scheduleId = req.params.scheduleId;
