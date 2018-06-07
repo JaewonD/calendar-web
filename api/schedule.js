@@ -20,7 +20,7 @@ router.get('/personal/:startdate/:enddate', (req, res) => {
     var startdate = req.params.startdate + " 00:00:00";
     var enddate = req.params.enddate + " 23:59:59";
 
-    pool.query(util.format('SELECT start_time AS starttime, end_time AS endtime, name AS scheduleName \
+    pool.query(util.format('SELECT id, start_time AS starttime, end_time AS endtime, name AS scheduleName \
                             FROM Schedules \
                             WHERE user_id = "%s" \
                             AND \
@@ -39,7 +39,8 @@ router.get('/personal/:startdate/:enddate', (req, res) => {
                 response["error"] = "";
                 response["data"] = [];
                 for (var i = 0; i < results.length; i += 1) {
-                    response["data"].push({"starttime": results[i].starttime, "endtime": results[i].endtime, "name": results[i].scheduleName});
+                    response["data"].push({"id": results[i].id, "starttime": results[i].starttime,
+                                           "endtime": results[i].endtime, "name": results[i].scheduleName});
                 }
                 res.json(response);
                 return;
@@ -63,7 +64,7 @@ router.get('/group/:startdate/:enddate', (req, res) => {
     var startdate = req.params.startdate + " 00:00:00";
     var enddate = req.params.enddate + " 23:59:59";
 
-    pool.query(util.format('SELECT Schedules.group_id AS groupid, start_time AS starttime, end_time AS endtime, name AS scheduleName \
+    pool.query(util.format('SELECT id, Schedules.group_id AS groupid, start_time AS starttime, end_time AS endtime, name AS scheduleName \
                             FROM Schedules, groups_users \
                             WHERE groups_users.user_id = "%s" \
                             AND Schedules.group_id = groups_users.group_id \
@@ -90,7 +91,8 @@ router.get('/group/:startdate/:enddate', (req, res) => {
                     if (!response_unformat.has(groupid)) {
                         response_unformat.set(groupid, []);
                     }
-                    response_unformat.get(groupid).push({"starttime": results[i].starttime, "endtime": results[i].endtime, "name": results[i].scheduleName})
+                    response_unformat.get(groupid).push({"id": results[i].id, "starttime": results[i].starttime,
+                                                         "endtime": results[i].endtime, "name": results[i].scheduleName});
                 }
 
                 for (var [groupid, data] of response_unformat) {
@@ -137,4 +139,36 @@ router.post('/personal/:title/:startdate/:enddate', (req, res) => {
         }
     });
 })
+
+router.delete('/:scheduleId', (req, res) => {
+    var scheduleId = req.params.scheduleId;
+    var sess = req.session;
+    var username = sess.username;
+    if (username != undefined) {
+        pool.query(util.format('DELETE FROM Schedules \
+                                WHERE id = "%s";'
+                                , scheduleId), function(err, results, fields) {
+            var response = {};
+            if (!err) {
+                response["success"] = "true";
+                response["error"] = "";
+                res.json(response);
+                return;
+            } else {
+                console.log(err)
+                response["success"] = "false";
+                response["error"] = "Internal schedule db error!";
+                res.json(response);
+                return;
+            }
+        });
+    } else {
+        console.log(err)
+        response["success"] = "false";
+        response["error"] = "Internal schedule db error!";
+        res.json(response);
+        return;
+    }
+});
+
 module.exports = router;
