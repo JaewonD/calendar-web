@@ -69,6 +69,10 @@
                       <div class="col col-5">
                         <label for="scheduleGroupTitleInput"><h5>Title</h5></label>
                         <input type="text" class="mb-4 form-control" id="scheduleGroupTitleInput">
+                        <label for="scheduleGroupSelectInput"><h5>Participating Group</h5></label>
+                        <input type="text" class="mb-4 form-control" id="scheduleGroupSelectInput">
+                        <label><h6 id="scheduleGroupSelected">Group selected: None</h6></label>
+                        <div id="scheduleGroupSelectedId" style="display: none;">ID value that is hidden</div>
                         <div class="mb-4">
                           <div class="form-group">
                             <label for="scheduleGroupStartTimeInput"><h5>Start Time</h5></label>
@@ -79,10 +83,7 @@
                             <input type="datetime-local" class="form-control" id="scheduleGroupEndTimeInput">
                           </div>
                         </div>
-                        <label for="scheduleGroupSelectInput"><h5>Participating Group</h5></label>
-                        <input type="text" class="mb-4 form-control" id="scheduleGroupSelectInput">
-                        <label><h6 id="scheduleGroupSelected">Group selected: None</h6></label>
-                        <div id="scheduleGroupSelectedId" style="display: none;">ID value that is hidden</div>
+                        
                       </div>
                       <div class="col col-7">
                         <div class="div-date-group row mb-3">
@@ -251,9 +252,6 @@
           </table>
         </div>
       </div>
-    </div>
-    <div class="schedule-detail-test" style="position: relative;float: right;">
-      <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-schedule-detail">Schedule Detail Modal Test</button>
     </div>
     <!-- Schedule Detail Modal -->
     <div class="modal fade" id="modal-schedule-detail" tabindex="-1" role="dialog" aria-labelledby="modalScheduleDetailTitle" aria-hidden="true">

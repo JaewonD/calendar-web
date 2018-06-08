@@ -154,6 +154,7 @@ function clear_timetable() {
             var cell = document.getElementById(cell_id);
             cell.style.backgroundColor = null;
             cell.style.borderBottomColor = null;
+            cell.style.cursor = null;
             $("#" + cell_id).unbind("click");
         }
     }
@@ -205,6 +206,7 @@ function render_schedule(data, group_id) {
                     target_cell_date.getTime() < end_dt_event_date.getTime()) {
                     cell.style.backgroundColor = colors[i % 3];
                     cell.style.borderBottomColor = colors[i % 3];
+                    cell.style.cursor = 'pointer';
 
                     var schedule = data[i];
                     schedule["groupId"] = group_id;
