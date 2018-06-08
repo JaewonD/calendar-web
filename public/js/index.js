@@ -154,6 +154,7 @@ function clear_timetable() {
             var cell = document.getElementById(cell_id);
             cell.style.backgroundColor = null;
             cell.style.borderBottomColor = null;
+            cell.style.cursor = null;
             $("#" + cell_id).unbind("click");
         }
     }
@@ -185,13 +186,15 @@ function render_schedule(data, group_id) {
     var end_date = new Date(date);
     end_date.setDate(end_date.getDate() + DAYS_IN_A_WEEK - 1);
 
-    var colors = ["#7fffd4", "#229922", "#1199aa"];
+    var colors = ["#3F51B5", "#E67C73", "#AD1457", "#009688", "#7986CB"];
+    var color_index = 0;
+    var colors_length = colors.length;
     for (var i = 0; i < data.length; i += 1) {
         var start_dt_event      = data[i].starttime;
         var start_dt_event_date = new Date(start_dt_event);
         var end_dt_event        = data[i].endtime;
         var end_dt_event_date   = new Date(end_dt_event);
-
+        color_index++;
         for (var day_offset = 0; day_offset < DAYS_IN_A_WEEK; day_offset += 1) {
             for (var hour_start = 0; hour_start < 24; hour_start += 1) {
                 var target_cell_id = "timecell-" + hour_start + "-" + day_offset;
@@ -203,8 +206,9 @@ function render_schedule(data, group_id) {
                 target_cell_date.setHours(target_cell_date.getHours() + hour_start);
                 if (target_cell_date.getTime() >= start_dt_event_date.getTime() &&
                     target_cell_date.getTime() < end_dt_event_date.getTime()) {
-                    cell.style.backgroundColor = colors[i % 3];
-                    cell.style.borderBottomColor = colors[i % 3];
+                    cell.style.backgroundColor = colors[color_index % colors_length];
+                    cell.style.borderBottomColor = colors[color_index % colors_length];
+                    cell.style.cursor = 'pointer';
 
                     var schedule = data[i];
                     schedule["groupId"] = group_id;

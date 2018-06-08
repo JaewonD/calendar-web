@@ -1,11 +1,22 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark bg-info">
 	<a class="navbar-brand mr-auto" href="/">Timetable Management System</a>
 	<ul class="navbar-nav">
+		<% if(name) { %>
+		<li class="nav-item mr-3">
+			<span class="navbar-text text-white">User: 
+				<span class="font-weight-bold"><%= name %></span>				
+			</span>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/signout">Sign Out</a>
+		</li>
+		<% } else {%>
 		<li class="nav-item">
 			<a class="nav-link" href="/signin">Sign In</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="/signup">Sign Up</a>
 		</li>
+		<% }%>
 	</ul>
 </nav>
